@@ -1,0 +1,12 @@
+*/config/development
+*/logs/log-*.php
+*/logs/!index.html
+*/cache/*
+*/cache/!index.html
+*/cache/!.htaccess
+
+### OSX ###
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
