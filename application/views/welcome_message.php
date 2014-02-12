@@ -1,88 +1,44 @@
 <!DOCTYPE html>
 <html lang="ja">
-<head>
-	<meta charset="utf-8">
-	<title>CodeIgniter へようこそ</title>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <title>CodeIgniter へようこそ</title>
+        <link href="<?= base_url(); ?>css/bootstrap.min.css" rel="stylesheet" type="text/css" />
 
-	<style type="text/css">
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+          <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+        
+    </head>
+    <body>
 
-	::selection{ background-color: #E13300; color: white; }
-	::moz-selection{ background-color: #E13300; color: white; }
-	::webkit-selection{ background-color: #E13300; color: white; }
+        <div id="container">
+            <h1>CodeIgniter へようこそ!</h1>
 
-	body {
-		background-color: #fff;
-		margin: 40px;
-		font: 13px/20px normal Helvetica, Arial, sans-serif;
-		color: #4F5155;
-	}
+            <div id="body">
+                <p>今ご覧のこのページは、CodeIgniter によって動的に生成されました。</p>
 
-	a {
-		color: #003399;
-		background-color: transparent;
-		font-weight: normal;
-	}
+                <p>このページを編集したい場合は、次の場所にあります:</p>
+                <code>application/views/welcome_message.php</code>
 
-	h1 {
-		color: #444;
-		background-color: transparent;
-		border-bottom: 1px solid #D0D0D0;
-		font-size: 19px;
-		font-weight: normal;
-		margin: 0 0 14px 0;
-		padding: 14px 15px 10px 15px;
-	}
+                <p>このページのコントローラは次の場所にあります:</p>
+                <code>application/controllers/welcome.php</code>
 
-	code {
-		font-family: Consolas, Monaco, Courier New, Courier, monospace;
-		font-size: 12px;
-		background-color: #f9f9f9;
-		border: 1px solid #D0D0D0;
-		color: #002166;
-		display: block;
-		margin: 14px 0 14px 0;
-		padding: 12px 10px 12px 10px;
-	}
+                <p>CodeIgniter を使うのが初めてなら、<a href="user_guide_ja/">ユーザガイド</a>を読むことから始めてください。</p>
+            </div>
 
-	#body{
-		margin: 0 15px 0 15px;
-	}
-	
-	p.footer{
-		text-align: right;
-		font-size: 11px;
-		border-top: 1px solid #D0D0D0;
-		line-height: 32px;
-		padding: 0 10px 0 10px;
-		margin: 20px 0 0 0;
-	}
-	
-	#container{
-		margin: 10px;
-		border: 1px solid #D0D0D0;
-		-webkit-box-shadow: 0 0 8px #D0D0D0;
-	}
-	</style>
-</head>
-<body>
-
-<div id="container">
-	<h1>CodeIgniter へようこそ!</h1>
-
-	<div id="body">
-		<p>今ご覧のこのページは、CodeIgniter によって動的に生成されました。</p>
-
-		<p>このページを編集したい場合は、次の場所にあります:</p>
-		<code>application/views/welcome_message.php</code>
-
-		<p>このページのコントローラは次の場所にあります:</p>
-		<code>application/controllers/welcome.php</code>
-
-		<p>CodeIgniter を使うのが初めてなら、<a href="user_guide_ja/">ユーザガイド</a>を読むことから始めてください。</p>
-	</div>
-
-	<p class="footer">このページは、{elapsed_time} 秒でレンダリングされました。</p>
-</div>
-
-</body>
+            <p class="footer">このページは、{elapsed_time} 秒でレンダリングされました。</p>
+        </div>
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script src="https://code.jquery.com/jquery.js"></script>
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="<?= base_url(); ?>js/bootstrap.min.js"></script>
+    </body>
 </html>
