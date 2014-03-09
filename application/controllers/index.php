@@ -16,6 +16,8 @@ class Index extends MY_Controller {
         //認証チェック
         $this->load->library('login');
         $this->login->login_status_check('index');
+        $this->load->model('projects_model', 'projects');
+        $this->load->model('users_model', 'users');
 
     }
 
@@ -31,12 +33,15 @@ class Index extends MY_Controller {
         //ページ判定
 
         $this->load->view('header', $view_text);
+        $this->load->view('sidebar', $view_text);
         $this->load->view($name, $view_text);
         $this->load->view('footer', $view_text);
     }
 
     function index() {
         $view_text['title'] = 'TOP';
+        $view_text['projects'] = $this->projects->get_all();
+        $view_text['users'] = $this->users->get_all();
         $this->_display('index', $view_text);
     }
 
