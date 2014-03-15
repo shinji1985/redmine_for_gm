@@ -7,7 +7,7 @@
         <title><?= $title; ?>｜<?= SYS_NM; ?></title>
         <meta name="description" content="REDMINE VIEWER">
         <meta name="author" content="Shinji Yamaguchi">
-        <link href="<?= base_url(); ?>css/bootstrap.css" rel="stylesheet" type="text/css" />
+        <link href="<?= base_url(); ?>css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="<?= base_url(); ?>css/dashboard.css" rel="stylesheet" type="text/css" />
         <link href="<?= base_url(); ?>css/jquery.handsontable.full.css" rel="stylesheet" type="text/css" />
         <link href="<?= base_url(); ?>css/ui-bootstrap/jquery-ui.custom.css" rel="stylesheet" type="text/css" />

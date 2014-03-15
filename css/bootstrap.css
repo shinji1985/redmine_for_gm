@@ -256,13 +256,13 @@ th {
     border: 1px solid #ddd !important;
   }
 }
-*:not(.leftPanel){
+*{
   -webkit-box-sizing: border-box;
      -moz-box-sizing: border-box;
           box-sizing: border-box;
 }
 *:before,
-*:after {
+*:after{
   -webkit-box-sizing: border-box;
      -moz-box-sizing: border-box;
           box-sizing: border-box;

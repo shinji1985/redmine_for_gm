@@ -35,7 +35,7 @@
 
 .fn-gantt .leftPanel {
     float: left;
-    width: 225px;
+    width: 375px;
     overflow: hidden;
     border-right: 1px solid #DDD;
     position: relative;
@@ -53,12 +53,28 @@
     display: inline-block;
     margin: 0 0 0 5px;
     color: #484A4D;
-    width: 110px;
+    width: 160px;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
 }
-
+.fn-gantt .leftPanel .fn-label-desc {
+    display: inline-block;
+    margin: 0 0 0 5px;
+    color: #484A4D;
+    width: 205px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+     /* Bootstrap 3.0 re-reset */
+     .fn-gantt *,
+      .fn-gantt *:after,
+       .fn-gantt *:before {
+         -webkit-box-sizing: content-box;
+            -moz-box-sizing: content-box;
+                 box-sizing: content-box;
+       }
 .fn-gantt .leftPanel .row0 {
     border-top: 1px solid #DDD;
 }
@@ -71,12 +87,12 @@
 }
 
 .fn-gantt .leftPanel .name {
-    width: 110px;
+    width: 160px;
     font-weight: bold;
 }
 
 .fn-gantt .leftPanel .desc {
-    width: 115px;
+    width: 215px;
 }
 
 .fn-gantt .leftPanel .fn-wide, .fn-gantt .leftPanel .fn-wide .fn-label {
