@@ -42,7 +42,8 @@ define('FOPEN_READ_WRITE_CREATE_STRICT',		'x+b');
  * User define
  *
  */
-define('SYS_NM','Redmine Viewer');
+define('SYS_NM','Redmine Igniter');
+define('REDMINE_URL','http://redmine.bit-vietnam.com/');
 
 /* End of file constants.php */
 /* Location: ./application/config/constants.php */

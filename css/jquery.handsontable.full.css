@@ -388,7 +388,12 @@ ul.context-menu-list li {
 .handsontable.listbox tr:hover td {
   background: #eee;
 }
-
+.handsontable .currentRow {
+background-color: #E7E8EF;
+}
+.handsontable .currentCol {
+background-color: #F9F9FB;
+}
 .htContextMenu {
   display: none;
   position: absolute;
