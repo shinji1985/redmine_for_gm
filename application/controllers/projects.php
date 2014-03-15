@@ -13,18 +13,21 @@ class Projects extends MY_Controller {
     function __construct() {
         parent::__construct();
 
-        //認証チェック
+        //authentication
         $this->load->library('login');
         $this->login->login_status_check('');
+        
+        //load models
         $this->load->model('projects_model', 'projects');
         $this->load->model('issues_model', 'issues');
     }
 
     function _display($name, $view_text) {
-        //ページ判定
+        //project list for header
+        $view_text['dropdown_projects'] = $this->projects->get_all();
+
 
         $this->load->view('header', $view_text);
-        $this->load->view('sidebar', $view_text);
         $this->load->view($name, $view_text);
         $this->load->view('footer', $view_text);
     }
@@ -34,10 +37,10 @@ class Projects extends MY_Controller {
             //Show project detail
             $where['identifier'] = $identifier;
             $view_text['project'] = $this->projects->get_row($where);
-            
-            $issues_where['project_id']=$view_text['project']['id'];
+
+            $issues_where['project_id'] = $view_text['project']['id'];
             $view_text['issues'] = $this->issues->get_all($issues_where);
-            
+
             if ($view_text['project']) {
                 $view_text['title'] = $view_text['project']['name'];
                 $this->_display('projects_detail', $view_text);
@@ -47,7 +50,6 @@ class Projects extends MY_Controller {
         } else {
             //Show projects
             $view_text['title'] = 'Projects';
-            $view_text['projects'] = $this->projects->get_all();
             $this->_display('projects', $view_text);
         }
     }

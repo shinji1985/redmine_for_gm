@@ -13,9 +13,11 @@ class Index extends MY_Controller {
     function __construct() {
         parent::__construct();
 
-        //認証チェック
+        //authentication
         $this->load->library('login');
         $this->login->login_status_check('index');
+        
+        //load models
         $this->load->model('projects_model', 'projects');
         $this->load->model('users_model', 'users');
 
@@ -30,10 +32,10 @@ class Index extends MY_Controller {
     }
 
     function _display($name, $view_text) {
-        //ページ判定
+        //project list for header
+        $view_text['dropdown_projects'] = $this->projects->get_all();
 
         $this->load->view('header', $view_text);
-        $this->load->view('sidebar', $view_text);
         $this->load->view($name, $view_text);
         $this->load->view('footer', $view_text);
     }
@@ -46,9 +48,9 @@ class Index extends MY_Controller {
     }
 
 
-    function phpinfo() {
-        phpinfo();
-    }
+//    function phpinfo() {
+//        phpinfo();
+//    }
 
 }
 
