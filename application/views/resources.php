@@ -25,18 +25,18 @@
                 $issues_row['due_date'] = $issues_row['start_date'];
             endif;
             ?>
-//                                        {
-//                                            name: "<?= $user_row['firstname']; ?> <?= $user_row['lastname']; ?>",
-//                                            desc: "<?= $issues_row['subject']; ?>",
-//                                            values: [{
-//                                                    id: "<?= $issues_row['id']; ?>",
-//                                                    from: "/Date(<?= strtotime($issues_row['start_date']) * 1000; ?>)/",
-//                                                    to: "/Date(<?= strtotime($issues_row['due_date']) * 1000; ?>)/",
-//                                                    label: "<?= $issues_row['subject']; ?>", 
-//                                                    customClass: "ganttGreen",
-//                                                    dep: "t01"
-//                                                }]
-//                                        },
+                                        {
+                                            name: "<?= $user_row['firstname']; ?> <?= $user_row['lastname']; ?>",
+                                            desc: "<?= $issues_row['subject']; ?>",
+                                            values: [{
+                                                    id: "<?= $issues_row['id']; ?>",
+                                                    from: "/Date(<?= strtotime($issues_row['start_date']) * 1000; ?>)/",
+                                                    to: "/Date(<?= strtotime($issues_row['due_date']) * 1000; ?>)/",
+                                                    label: "<?= $issues_row['subject']; ?>", 
+                                                    customClass: "ganttGreen",
+                                                    dep: "t01"
+                                                }]
+                                        },
         <?php endforeach; ?>
     <?php else: ?>
                             {
