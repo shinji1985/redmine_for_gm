@@ -23,6 +23,7 @@
         <script src="<?= base_url(); ?>js/jquery-ui/js/jquery-ui.custom.min.js"></script>
         <!-- for gantt -->
 	<script src="<?= base_url(); ?>js/gantt/jquery.fn.gantt.js"></script>
+        <script src="http://taitems.github.com/UX-Lab/core/js/prettify.js"></script>
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
