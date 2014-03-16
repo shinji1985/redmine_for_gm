@@ -37,9 +37,10 @@ class Resources extends MY_Controller {
         $users = $this->users->get_all(array('login !=' => ''), $order_by);
 
         $i = 0;
+        $monthago = date('Y-m-d', strtotime('-1 month'));
         foreach ($users as $user_row):
             //remove status Resolved Closed Rejected
-            $where = "issues.assigned_to_id ='{$user_row['id']}' AND issues.status_id !='3' AND issues.status_id !='5' AND issues.status_id != '6'";
+            $where = "issues.start_date > '{$monthago}' AND issues.assigned_to_id ='{$user_row['id']}' AND issues.status_id !='3' AND issues.status_id !='5' AND issues.status_id != '6'";
 
             $issues_order_by = 'issues.project_id ASC';
             $view_text['users'][$i] = $user_row;
