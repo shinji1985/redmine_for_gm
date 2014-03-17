@@ -27,7 +27,7 @@ class Resources extends MY_Controller {
         $this->load->view('footer', $view_text);
     }
 
-    function index($identifier = "") {
+    function index() {
 
         //projects users issues 
         $where = array();
@@ -49,7 +49,32 @@ class Resources extends MY_Controller {
         endforeach;
 
         $view_text['title'] = 'RESOURCES';
-        $this->_display('resources', $view_text);
+        $this->_display('resources_p', $view_text);
+    }
+
+    function issues() {
+
+        //projects users issues 
+        $where = array();
+
+
+        $order_by = 'users.login ASC';
+        $users = $this->users->get_all(array('login !=' => ''), $order_by);
+
+        $i = 0;
+        $monthago = date('Y-m-d', strtotime('-1 month'));
+        foreach ($users as $user_row):
+            //remove status Resolved Closed Rejected
+            $where = "issues.start_date > '{$monthago}' AND issues.assigned_to_id ='{$user_row['id']}' AND issues.status_id !='3' AND issues.status_id !='5' AND issues.status_id != '6'";
+
+            $issues_order_by = 'issues.project_id ASC';
+            $view_text['users'][$i] = $user_row;
+            $view_text['users'][$i]['issues'] = $this->issues->get_all_with_projects($where, $issues_order_by);
+            $i++;
+        endforeach;
+
+        $view_text['title'] = 'RESOURCES';
+        $this->_display('resources_i', $view_text);
     }
 
 }
