@@ -14,7 +14,7 @@
             source: [
 <?php foreach ($users as $user_row):
     ?>
-                                                                                            
+                                                                                                
     <?php
     if (count($user_row['issues']) != 0):
         foreach ($user_row['issues'] as $issues_row):

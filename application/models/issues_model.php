@@ -12,14 +12,14 @@ class Issues_model extends MY_Model {
             projects.name  AS project_name, projects.identifier, 
             issue_statuses.name AS issue_status');
 
-        
+
 
         $this->db->join('projects', 'issues.project_id = projects.id', 'left');
         $this->db->join('issue_statuses', 'issues.status_id = issue_statuses.id', 'left');
 
         if (count($where) > 0)
             $this->db->where($where);
-        
+
         if (!empty($order_by))
             $this->db->order_by($order_by);
 
@@ -31,6 +31,7 @@ class Issues_model extends MY_Model {
 //        echo $this->db->last_query();
         return $query->result_array();
     }
+
 
 }
 
