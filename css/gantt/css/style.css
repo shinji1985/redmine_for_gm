@@ -230,6 +230,14 @@
     color: #78436D !important;
 }
 
+.fn-gantt .ganttOpen {
+    background-color: #fff;
+}
+.fn-gantt .ganttOpen .fn-label {
+    color: #fff !important;
+}
+
+
 .fn-gantt .ganttGreen {
     background-color: #D8EDA3;
 }

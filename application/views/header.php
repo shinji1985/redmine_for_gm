@@ -11,9 +11,9 @@
         <link href="<?= base_url(); ?>css/dashboard.css" rel="stylesheet" type="text/css" />
         <link href="<?= base_url(); ?>css/jquery.handsontable.full.css" rel="stylesheet" type="text/css" />
         <link href="<?= base_url(); ?>css/ui-bootstrap/jquery-ui.custom.css" rel="stylesheet" type="text/css" />
+        <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
         <!-- for gantt -->
         <link href="<?= base_url(); ?>css/gantt/css/style.css" rel="stylesheet" type="text/css" />
-
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
         <!-- Include all compiled plugins (below), or include individual files as needed -->
@@ -21,6 +21,7 @@
         <script src="<?= base_url(); ?>js/docs.min.js"></script>
         <script src="<?= base_url(); ?>js/jquery.handsontable.full.js"></script>
         <script src="<?= base_url(); ?>js/jquery-ui/js/jquery-ui.custom.min.js"></script>
+        
         <!-- for gantt -->
 	<script src="<?= base_url(); ?>js/gantt/jquery.fn.gantt.js"></script>
         <script src="http://taitems.github.com/UX-Lab/core/js/prettify.js"></script>
