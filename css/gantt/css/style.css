@@ -2,6 +2,7 @@
     width: 100%;
     margin: 20px auto;
     border: 14px solid #ddd;
+    position: relative;
         -webkit-border-radius: 6px;
         -moz-border-radius: 6px;
         border-radius: 6px;
@@ -35,7 +36,7 @@
 
 .fn-gantt .leftPanel {
     float: left;
-    width: 225px;
+    width: 375px;
     overflow: hidden;
     border-right: 1px solid #DDD;
     position: relative;
@@ -46,19 +47,35 @@
     float: left;
     height: 24px;
     line-height: 24px;
-    margin-left: -24px;
+    margin-left: -1px;
 }
 
 .fn-gantt .leftPanel .fn-label {
     display: inline-block;
     margin: 0 0 0 5px;
     color: #484A4D;
-    width: 110px;
+    width: 160px;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
 }
-
+.fn-gantt .leftPanel .fn-label-desc {
+    display: inline-block;
+    margin: 0 0 0 5px;
+    color: #484A4D;
+    width: 205px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+     /* Bootstrap 3.0 re-reset */
+     .fn-gantt *,
+      .fn-gantt *:after,
+       .fn-gantt *:before {
+         -webkit-box-sizing: content-box;
+            -moz-box-sizing: content-box;
+                 box-sizing: content-box;
+       }
 .fn-gantt .leftPanel .row0 {
     border-top: 1px solid #DDD;
 }
@@ -71,12 +88,12 @@
 }
 
 .fn-gantt .leftPanel .name {
-    width: 110px;
+    width: 160px;
     font-weight: bold;
 }
 
 .fn-gantt .leftPanel .desc {
-    width: 115px;
+    width: 215px;
 }
 
 .fn-gantt .leftPanel .fn-wide, .fn-gantt .leftPanel .fn-wide .fn-label {
@@ -106,7 +123,6 @@
     background-position: 24px 24px;
     position: relative;
 }
-
 .fn-gantt .day, .fn-gantt .date {
     overflow: visible;
     width: 24px;
@@ -182,7 +198,7 @@
 .fn-gantt .bar {
     background-color: #D0E4FD;
     height: 18px;
-    margin: 4px 3px 3px 3px;
+    margin: 0px 3px 3px 0px;
     position: absolute;
     z-index: 10;
     text-align: center;
@@ -214,6 +230,14 @@
     color: #78436D !important;
 }
 
+.fn-gantt .ganttOpen {
+    background-color: #fff;
+}
+.fn-gantt .ganttOpen .fn-label {
+    color: #fff !important;
+}
+
+
 .fn-gantt .ganttGreen {
     background-color: #D8EDA3;
 }
@@ -228,30 +252,6 @@
     color: #714715 !important;
 }
 
-.fn-gantt .depLine {
-  background-color: transparent;
-  position: absolute;
-  z-index: 9999;
-}
-
-.fn-gantt .depLineSh {
-  margin-top: 2px;
-  margin-left: 2px;
-  opacity: 0.3;
-}
-
-.fn-gantt .depStart, .fn-gantt .depEnd {
-  position: absolute;
-  width: 5px;
-  height: 5px;
-  -webkit-border-radius: 50%;
-  -moz-border-radius: 50%;
-  border-radius: 50%;
-  border: 2px solid #fff;
-  -webkit-box-shadow: 1px 1px 1px 0px #444;
-  box-shadow: 1px 1px 1px 0px #444;
-  z-index: 10001;
-}
 
 /* === BOTTOM NAVIGATION === */
 
@@ -420,25 +420,32 @@
 }
 
 .fn-gantt-loader {
-    background-image: url(../img/loader_bg.png);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#bf000000', endColorstr='#bf000000',GradientType=0 );
+    background: rgba(0,0,0,0.75);
+    cursor: wait;
     z-index: 30;
 }
-
-.fn-gantt-loader-spinner {
-    width: 100px;
-    height: 20px;
-    position: absolute;
-    margin-left: 50%;
-    margin-top: 50%;
-    text-align: center;
-}
 .fn-gantt-loader-spinner span {
+    position: absolute;
+    margin: auto;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    height: 1em;
+    line-height: 1em;
     color: #fff;
-    font-size: 12px;
+    font-size: 1em;
     font-weight: bold;
 }
 
 .row:after {
     clear: both;
 }
-
