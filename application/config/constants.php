@@ -44,9 +44,6 @@ define('FOPEN_READ_WRITE_CREATE_STRICT',		'x+b');
  */
 define('SYS_NM','Redmine for GM');
 define('REDMINE_URL','http://redmine.bit-vietnam.com/');
-//for gantt
-define('OPEN',' ');
-define('OPEN_CLASS','ganttOpen');
 
 /* End of file constants.php */
 /* Location: ./application/config/constants.php */

@@ -1,12 +1,10 @@
 
-<h1 class="page-header"><?= $title; ?><div class="rSidePosition"><?=$dropdown_groups;?></div></h1>
-<div class="well"><?=$page_description;?></div>
- 
+<h1 class="page-header"><?= $title; ?><div class="rSidePosition"><?= $dropdown_groups; ?></div></h1>
+<div class="well"><?= $page_description; ?></div>
 <ul class="nav nav-tabs">
-    <li><a href="<?= base_url(); ?>resources<?=$group_get_query;?>">Every projects</a></li>
-    <li class="active"><a href="<?= base_url(); ?>resources/issues<?=$group_get_query;?>">Every issues</a></li>
+    <li class="active"><a href="<?= base_url(); ?>resources<?= $group_get_query; ?>">Every projects</a></li>
+    <li><a href="<?= base_url(); ?>resources/issues<?= $group_get_query; ?>">Every issues</a></li>
 </ul>
-
 <div class="gantt"></div>
 <script>
     $(function() {
@@ -27,28 +25,19 @@ foreach ($users as $user_row):
         ?>
                                 {
                                     name: '<?= $name; ?>',
-                                    desc: "<?= $issues_row['subject']; ?>",
+                                    desc: "<?= $issues_row['project_name']; ?>",
                                     values: [{
-                                            id: "<?= $issues_row['id']; ?>",
+                                            id: "1",
                                             from: "/Date(<?= strtotime($issues_row['start_date']) * 1000; ?>)/",
                                             to: "/Date(<?= strtotime($issues_row['due_date']) * 1000; ?>)/",
-                                            label: "<?= $issues_row['subject']; ?>", 
+                                            label: "<?= $issues_row['project_name']; ?>", 
                                             customClass: "<?= $issues_row['customClass']; ?>",
                                             dep: "t01",
                                             dataObj: {
-                                                flg:'<?= $issues_row['flg']; ?>',
-                                                id:'<?= $issues_row['id']; ?>',
-                                                subject:'<?= $issues_row['subject']; ?>',
+                                                flg:'<?= $issues_row['identifier']; ?>',
                                                 project_name:'<?= $issues_row['project_name']; ?>',
                                                 identifier:'<?= $issues_row['identifier']; ?>',
-                                                description:"<?= $issues_row['subject']; ?> <br/>"
-                                                    +"<span class='glyphicon glyphicon-user'></span> <?= $user_row['firstname'] . ' ' . $user_row['lastname']; ?><br/>"
-                                                    +"<span class='glyphicon glyphicon-time'></span> <?= $issues_row['estimated_hours']; ?> hours<br/>"
-                                                    +"<span class='glyphicon glyphicon-play'></span> <?= $issues_row["issue_status"]; ?><br/>"
-                                                    +"<span class='glyphicon glyphicon-tasks'></span> <?= $issues_row["done_ratio"]; ?> %<br/>",
-                                                estimated_hours:'<?= $issues_row['estimated_hours']; ?>',
-                                                issue_status:'<?= $issues_row['issue_status']; ?>',
-                                                done_ratio:'<?= $issues_row['done_ratio']; ?>'
+                                                description:"<?= $issues_row['project_name']; ?> <br/>"
                                             }
                                         }]
                                 },
@@ -65,8 +54,8 @@ endforeach;
             itemsPerPage: 1000,
             scrollToToday:true,
             onItemClick: function(data) {
-                if(data.flg != 'open'){
-                    window.open('<?= REDMINE_URL; ?>issues/'+data.id);
+                if(data.flg != ''){
+                    window.open('<?= REDMINE_URL; ?>projects/'+data.identifier);
                 }
             },
             onAddClick: function(dt, rowId) {
@@ -85,11 +74,13 @@ endforeach;
             placement: 'top',
             html: true,
             title: function() {
-                return $(this).data('dataObj').project_name;
+                if($(this).data('dataObj').flg != ''){
+                    return $(this).data('dataObj').project_name;
+                }
             },
             content: function() {
-                if($(this).data('dataObj').flg != 'open'){
-                return $(this).data('dataObj').description;
+                if($(this).data('dataObj').flg != ''){
+                    return $(this).data('dataObj').description;
                 }
             },
             trigger: "hover"
