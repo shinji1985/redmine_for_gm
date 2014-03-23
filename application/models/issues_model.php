@@ -8,14 +8,15 @@ class Issues_model extends MY_Model {
 
     public function get_all_with_projects($where = array(), $order_by = "", $limit = 0, $offset = 0) {
 
-        $this->db->select('issues.id, issues.subject, issues.description, issues.due_date, issues.start_date, issues.done_ratio, issues.estimated_hours, issues.assigned_to_id, issues.status_id,
-            projects.name  AS project_name, projects.identifier, 
+
+
+        $this->db->select('issues.id, issues.subject,issues.tracker_id, issues.description, issues.due_date, issues.start_date, issues.done_ratio, issues.estimated_hours, issues.assigned_to_id, issues.status_id,
+            projects.name  AS project_name, projects.identifier, trackers.name AS tracker_name,
             issue_statuses.name AS issue_status');
-
-
 
         $this->db->join('projects', 'issues.project_id = projects.id', 'left');
         $this->db->join('issue_statuses', 'issues.status_id = issue_statuses.id', 'left');
+        $this->db->join('trackers', 'issues.tracker_id = trackers.id', 'left');
 
         if (count($where) > 0)
             $this->db->where($where);
@@ -31,7 +32,6 @@ class Issues_model extends MY_Model {
 //        echo $this->db->last_query();
         return $query->result_array();
     }
-
 
 }
 

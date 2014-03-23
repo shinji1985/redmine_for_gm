@@ -1,8 +1,10 @@
 
-<h1 class="page-header"><?= $title; ?></h1>
+<h1 class="page-header"><?= $title; ?><div class="rSidePosition"><?=$dropdown_groups;?></div></h1>
+<div class="well"><?=$page_description;?></div>
+ 
 <ul class="nav nav-tabs">
-    <li><a href="<?= base_url(); ?>resources">Every projects</a></li>
-    <li class="active"><a href="<?= base_url(); ?>resources/issues">Every issues</a></li>
+    <li><a href="<?= base_url(); ?>resources<?=$group_get_query;?>">Every projects</a></li>
+    <li class="active"><a href="<?= base_url(); ?>resources/issues<?=$group_get_query;?>">Every issues</a></li>
 </ul>
 
 <div class="gantt"></div>
@@ -40,9 +42,10 @@ foreach ($users as $user_row):
                                                 project_name:'<?= $issues_row['project_name']; ?>',
                                                 identifier:'<?= $issues_row['identifier']; ?>',
                                                 description:"<?= $issues_row['subject']; ?> <br/>"
+                                                    +"<span class='glyphicon glyphicon-flag'></span> <?= $issues_row["tracker_name"]; ?><br/>"
+                                                    +"<span class='glyphicon glyphicon-play'></span> <?= $issues_row["issue_status"]; ?><br/>"
                                                     +"<span class='glyphicon glyphicon-user'></span> <?= $user_row['firstname'] . ' ' . $user_row['lastname']; ?><br/>"
                                                     +"<span class='glyphicon glyphicon-time'></span> <?= $issues_row['estimated_hours']; ?> hours<br/>"
-                                                    +"<span class='glyphicon glyphicon-play'></span> <?= $issues_row["issue_status"]; ?><br/>"
                                                     +"<span class='glyphicon glyphicon-tasks'></span> <?= $issues_row["done_ratio"]; ?> %<br/>",
                                                 estimated_hours:'<?= $issues_row['estimated_hours']; ?>',
                                                 issue_status:'<?= $issues_row['issue_status']; ?>',
@@ -78,6 +81,7 @@ endforeach;
             }
         });
         $(".gantt").popover({
+            container: 'body', 
             selector: ".bar",
             placement: 'top',
             html: true,

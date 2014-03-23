@@ -13,14 +13,17 @@ class Index extends MY_Controller {
     function __construct() {
         parent::__construct();
 
-        //authentication
+        //library
+        $this->load->library('group');
         $this->load->library('login');
+
+        //authentication
         $this->login->login_status_check('index');
-        
+
+
         //load models
         $this->load->model('projects_model', 'projects');
         $this->load->model('users_model', 'users');
-
     }
 
     function login() {
@@ -34,6 +37,9 @@ class Index extends MY_Controller {
     function _display($name, $view_text) {
         //project list for header
         $view_text['dropdown_projects'] = $this->projects->get_all();
+        //users group get query
+        $view_text['group_get_query']=$this->group->generate_get_query();
+
 
         $this->load->view('header', $view_text);
         $this->load->view($name, $view_text);
@@ -47,11 +53,9 @@ class Index extends MY_Controller {
         $this->_display('index', $view_text);
     }
 
-
 //    function phpinfo() {
 //        phpinfo();
 //    }
-
 }
 
 ?>
