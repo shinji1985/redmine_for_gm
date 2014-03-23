@@ -13,7 +13,7 @@ class Login {
 
     function logout() {
         $this->CI->session->sess_destroy();
-        $view_text['result_text'] = '<div class="alert alert-success">ログアウトしました</div>';
+        $view_text['result_text'] = '<div class="alert alert-success">Log out complete.</div>';
         $this->CI->load->view('login', $view_text);
     }
 
@@ -31,7 +31,7 @@ class Login {
                 //Go to top page
                 redirect(base_url() . 'index', 'refresh');
             } else {
-                $view_text['result_text'] = '<div class="alert alert-danger">Invalid Login ID or Password</div>';
+                $view_text['result_text'] = '<div class="alert alert-danger">Invalid Login ID or Password.</div>';
                 $this->CI->load->view('login', $view_text);
             }
         } else {

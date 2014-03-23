@@ -1,0 +1,23 @@
+/* 
+    Document   : all
+    Created on : 2014/03/22, 22:29:08
+    Author     : Bit
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+.scrollable-menu {
+    height: auto;
+    max-height: 500px;
+    overflow-x: hidden;
+}
+.page-header{
+    position:relative;
+}
+.rSidePosition {
+    position: absolute;
+    display: block;
+    top: -3px;
+    right: 0px;
+    font-weight: normal;
+}

@@ -42,7 +42,7 @@ define('FOPEN_READ_WRITE_CREATE_STRICT',		'x+b');
  * User define
  *
  */
-define('SYS_NM','Redmine Igniter');
+define('SYS_NM','Redmine for GM');
 define('REDMINE_URL','http://redmine.bit-vietnam.com/');
 //for gantt
 define('OPEN',' ');

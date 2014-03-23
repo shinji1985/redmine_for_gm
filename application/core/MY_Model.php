@@ -37,7 +37,9 @@ class MY_Model extends CI_Model {
 
         $query = $this->db->get($this->get_table());
 
+//        echo $this->db->last_query();
         return $query->result_array();
+        
     }
 
     public function get_all_cnt($where = array(), $order_by = '', $limit = 0, $offset = 0) {
