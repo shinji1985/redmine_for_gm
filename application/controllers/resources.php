@@ -78,7 +78,7 @@ class Resources extends MY_Controller {
     function index() {
         $view_text = array();
 
-        $users = $this->_getusers_in_group();
+        $users = $this->group->getusers_in_group($this->session->userdata("group_id"));
 
 
         $i = 0;
@@ -151,7 +151,7 @@ class Resources extends MY_Controller {
     function issues() {
         $view_text = array();
 
-        $users = $this->_getusers_in_group();
+        $users = $this->group->getusers_in_group($this->session->userdata("group_id"));
 
 
         $i = 0;
@@ -214,28 +214,7 @@ class Resources extends MY_Controller {
         $this->_display('resources/resources_i', $view_text);
     }
 
-    //Get users in group specified in session.
-    function _getusers_in_group() {
-
-        $users_in_group = $this->groups_users->get_all(array('group_id' => $this->session->userdata("group_id")));
-        $user_where = "login != '' ";
-
-        if ($users_in_group):
-            $i = 0;
-            foreach ($users_in_group as $row):
-                if ($i == 0):
-                    $user_where = $user_where . "AND (id = '" . $row['user_id'] . "' ";
-                else:
-                    $user_where = $user_where . "OR id = '" . $row['user_id'] . "' ";
-                endif;
-                $i++;
-            endforeach;
-            $user_where = $user_where . ')';
-        endif;
-
-        $order_by = 'users.id ASC';
-        return $this->users->get_all($user_where, $order_by);
-    }
+    
 
     //Get issues assigned nobody
     function _getissues_no_assigned() {
