@@ -31,7 +31,7 @@ class Login {
                 //Go to top page
                 redirect(base_url() . 'index', 'refresh');
             } else {
-                $view_text['result_text'] = '<div class="alert alert-danger">Invalid Login ID or Password.</div>';
+                $view_text['result_text'] = '<div class="alert alert-danger">Invalid Login ID or Password.<br/>※You must be an admin account.</div>';
                 $this->CI->load->view('login', $view_text);
             }
         } else {
@@ -57,8 +57,12 @@ class Login {
         $row = $this->CI->users->get_row($user);
 
         if ($row) {
-            if (sha1($row['salt'].sha1($password)) == $row['hashed_password']) {
-                return TRUE;
+            if (sha1($row['salt'] . sha1($password)) == $row['hashed_password']) {
+                if ($row['admin'] == 1) {
+                    return TRUE;
+                } else {
+                    return FALSE;
+                }
             } else {
                 return FALSE;
             }

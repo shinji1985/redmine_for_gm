@@ -44,6 +44,10 @@ define('FOPEN_READ_WRITE_CREATE_STRICT',		'x+b');
  */
 define('SYS_NM','Redmine for GM');
 define('REDMINE_URL','http://redmine.bit-vietnam.com/');
+define('ATTENDANCE_PRJ_IDENTIFIER','bvnworktime');
+define ('HOLIDAYS', serialize (array ("2014-04-09", "2014-04-30", "2014-05-01", "2014-09-02")));
+define('ATTENDANCE_WEEKDAY_WORKTIME','8');
+
 
 /* End of file constants.php */
 /* Location: ./application/config/constants.php */

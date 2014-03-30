@@ -45,6 +45,7 @@ $route['default_controller'] = "index";
 $route['404_override'] = '';
 
 $route['projects/(:any)'] = "projects/index/$1";
+$route['attendance/(:num)/(:num)'] = "attendance/index/$1/$2";
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

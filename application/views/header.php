@@ -31,6 +31,11 @@
         <!-- for gantt -->
         <script src="<?= base_url(); ?>js/gantt/jquery.fn.gantt.js"></script>
         <script src="http://taitems.github.com/UX-Lab/core/js/prettify.js"></script>
+        
+        <!-- for attendance -->
+        <script src="<?= base_url(); ?>js/jquery.mousewheel.js"></script>
+        
+        
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
@@ -69,6 +74,7 @@
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="<?= base_url(); ?>">Dashboard</a></li>
+                        <li><a href="<?= base_url(); ?>attendance<?= $group_get_query; ?>">Attendance</a></li>
                         <li><a href="<?= base_url(); ?>resources<?= $group_get_query; ?>">Resources</a></li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Projects <b class="caret"></b></a>
