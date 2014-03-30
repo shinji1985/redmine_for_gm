@@ -5,8 +5,13 @@ if (!defined('BASEPATH'))
 
 class Attendance extends MY_Controller {
 
+    private $holidays;
+
     function __construct() {
         parent::__construct();
+
+        //init
+        $this->holidays = unserialize(HOLIDAYS);
 
         //library
         $this->load->library('group');
@@ -62,6 +67,7 @@ class Attendance extends MY_Controller {
                     $where = "issues.start_date = '{$view_text['date']['year_month']}-{$k_day}' AND issues.project_id = '{$view_text['project']['id']}' AND issues.assigned_to_id = '{$user_row['id']}'";
 
                     $issues_result = $this->issues->get_issues_for_attendance($where, $issues_order_by);
+
                     $view_text['users'][$i]['issues'][$k] = $issues_result;
 
                 endfor;
@@ -85,6 +91,21 @@ class Attendance extends MY_Controller {
     function _calc_date($year = '', $month = '') {
         $date['year'] = (int) $year;
         $date['month'] = (int) $month;
+
+        $date['month_dropdown'] = array(
+            '1' => 'Jan',
+            '2' => 'Feb',
+            '3' => 'Mar',
+            '4' => 'Apr',
+            '5' => 'May',
+            '6' => 'Jun',
+            '7' => 'Jul',
+            '8' => 'Aug',
+            '9' => 'Sep',
+            '10' => 'Oct',
+            '11' => 'Nov',
+            '12' => 'Dec'
+        );
 
         if ($year == "" || $month == ""):
 
@@ -140,46 +161,153 @@ class Attendance extends MY_Controller {
         $days = array();
         $week = array();
         $user_attend = array();
+        $max_weekday_woking = 0;
+        //Init
         for ($u_cnt = 0; $u_cnt < count($view_text['users']); $u_cnt++):
-            $user_attend[$u_cnt]=array();
+            $user_attend[$u_cnt] = array();
+            $holiday_woking[$u_cnt] = 0;
+            $over_woking[$u_cnt] = 0;
+            $weekday_woking[$u_cnt] = 0;
+            $sunday_woking[$u_cnt] = 0;
+            $saturday_woking[$u_cnt] = 0;
         endfor;
 
         for ($day = 1; $day <= $view_text['date']['max_days']; $day++):
             $time = mktime(0, 0, 0, $view_text['date']['month'], $day, $view_text['date']['year']);
 
+            //Set weekday name
             $weekday = date("D", $time);
 
-            foreach ($view_text['users'] as $row):
-                echo $day . '<br/>';
-                
-                foreach ($row['issues'][$day] as $hour_row):
-                    echo $hour_row['estimated_hours'];
-                endforeach;
-                echo '<br/>';
-            endforeach;
-
+            //Check holiday
+            $zero_day = sprintf("%02d", $day);
+            $the_date = "{$view_text['date']['year_month']}-{$zero_day}";
+            if (in_array($the_date, $this->holidays)):
+                $weekday = 'Hol';
+            endif;
+            //Set color in accordance with the day type
             switch ($weekday):
+                case 'Hol';
+                    $set_color = 'danger';
+                    break;
                 case 'Sat';
-                    $days[] = '<th class="cell_center info">' . $day . '</th>';
-                    $week[] = '<td class="cell_center info"><small>' . date("D", $time) . '</small></td>';
+                    $set_color = 'info';
                     break;
                 case 'Sun';
-                    $days[] = '<th class="cell_center danger">' . $day . '</th>';
-                    $week[] = '<td class="cell_center danger"><small>' . date("D", $time) . '</small></td>';
+                    $set_color = 'danger';
                     break;
                 default :
-                    $days[] = '<th class="cell_center">' . $day . '</th>';
-                    $week[] = '<td class="cell_center"><small>' . date("D", $time) . '</small></td>';
+                    $max_weekday_woking = $max_weekday_woking + ATTENDANCE_WEEKDAY_WORKTIME;
+                    $set_color = '';
                     break;
             endswitch;
+
+
+            $days[] = "<th class='cell_center {$set_color}'>{$day}</th>";
+            $week[] = "<td class='cell_center {$set_color}'><small>{$weekday}</small></td>";
+
+            for ($u_cnt = 0; $u_cnt < count($view_text['users']); $u_cnt++):
+                
+                $set_color_u = $set_color;
+                $work_time = '';
+                $set_url = '';
+                $mult_issues = 0;
+                $admin_flg = 1;
+
+                //Add up the worktime on the day
+                foreach ($view_text['users'][$u_cnt]['issues'][$day] as $row):
+
+
+                    $mult_issues++;
+
+                    if (!empty($row['estimated_hours'])):
+                        $work_time = $work_time + (int) $row['estimated_hours'];
+                    else:
+                        $work_time = $work_time + 0;
+                    endif;
+
+                    //If the issue status is not closed, set admin_flg to false.
+                    if ($row['status_id'] != 5):
+                        $admin_flg = 0;
+                    endif;
+
+                    $set_url = REDMINE_URL . 'issues/' . $row['id'];
+                endforeach;
+
+                //Calc working time 
+                switch ($weekday):
+                    case 'Hol';
+                        $holiday_woking[$u_cnt] = $holiday_woking[$u_cnt] + (int) $work_time;
+                        break;
+                    case 'Sat';
+                        $saturday_woking[$u_cnt] = $saturday_woking[$u_cnt] + (int) $work_time;
+                        break;
+                    case 'Sun';
+                        $sunday_woking[$u_cnt] = $sunday_woking[$u_cnt] + (int) $work_time;
+                        break;
+                    default :
+                        $tmp_work = (int) $work_time;
+                        if ($tmp_work <= ATTENDANCE_WEEKDAY_WORKTIME):
+                            $weekday_woking[$u_cnt] = $weekday_woking[$u_cnt] + $tmp_work;
+                            $over_woking[$u_cnt] = $over_woking[$u_cnt] + 0;
+                        else:
+                            $weekday_woking[$u_cnt] = $weekday_woking[$u_cnt] + ATTENDANCE_WEEKDAY_WORKTIME;
+                            $over_woking[$u_cnt] = $over_woking[$u_cnt] + ($tmp_work - ATTENDANCE_WEEKDAY_WORKTIME);
+                        endif;
+                        break;
+                endswitch;
+
+                if (is_int($work_time)):
+                    //Set popover
+                    $data_content = '';
+                    //If the last update user is Admin, set admin flg.
+                    if ($admin_flg == 1):
+                        $data_content = 'Admin: <span class="glyphicon glyphicon-ok-sign"></span> ';
+                        $set_color_u = "success";
+                    else :
+                        $data_content = 'Admin: Unapproved';
+                    endif;
+                    //If the worktime consists of 2 issues, set the text as follows.
+                    if ($mult_issues > 1):
+                        $data_content = $data_content . '<br/>This worktime consists of 2 issues. Check Redmine.';
+                    endif;
+
+
+                    $popover_data = "rel='popover' data-content='{$data_content}'";
+
+                    //Set td
+                    $user_attend[$u_cnt][] = "<td class='cell_center {$set_color_u}'><small><a href='{$set_url}' target='_blank' {$popover_data}>{$work_time}</a></small></td>";
+                else :
+                    //Set height for no working day
+                    $user_attend[$u_cnt][] = "<td class='cell_center {$set_color_u}'><small><span style='display:inline-block;'></span></small></td>";
+                endif;
+            endfor;
+
         endfor;
+        $days[] = "<th class='cell_center'>Weekday</th>";
+        $days[] = "<th class='cell_center'>Overtime</th>";
+        $days[] = "<th class='cell_center'>Saturday</th>";
+        $days[] = "<th class='cell_center'>Sunday</th>";
+        $days[] = "<th class='cell_center'>Holiday</th>";
+        $week[] = "<td class='cell_center'><small><span style='display:inline-block;'></span></small></td>";
+        $week[] = "<td class='cell_center'><small><span style='display:inline-block;'></span></small></td>";
+        $week[] = "<td class='cell_center'><small><span style='display:inline-block;'></span></small></td>";
+        $week[] = "<td class='cell_center'><small><span style='display:inline-block;'></span></small></td>";
+        $week[] = "<td class='cell_center'><small><span style='display:inline-block;'></span></small></td>";
 
         $this->table->add_row($days);
         $this->table->add_row($week);
 
-//        $this->table->add_row('Fred', 'Blue', 'Small');
-//        $this->table->add_row('Mary', 'Red', 'Large');
-//        $this->table->add_row('John', 'Green', 'Medium');
+        for ($u_cnt = 0; $u_cnt < count($view_text['users']); $u_cnt++):
+            $user_attend[$u_cnt][] = "<td class='cell_center'><small>{$weekday_woking[$u_cnt]}/{$max_weekday_woking}</small></td>";
+            $user_attend[$u_cnt][] = "<td class='cell_center'><small>{$over_woking[$u_cnt]}</small></td>";
+            $user_attend[$u_cnt][] = "<td class='cell_center'><small>{$saturday_woking[$u_cnt]}</small></td>";
+            $user_attend[$u_cnt][] = "<td class='cell_center'><small>{$sunday_woking[$u_cnt]}</small></td>";
+            $user_attend[$u_cnt][] = "<td class='cell_center'><small>{$holiday_woking[$u_cnt]}</small></td>";
+            $this->table->add_row($user_attend[$u_cnt]);
+        endfor;
+        $this->table->add_row($week);
+        $this->table->add_row($days);
+
 
         $view_text['date_table'] = $this->table->generate();
 

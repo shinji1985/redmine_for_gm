@@ -1,6 +1,8 @@
 
 <h1 class="page-header"><?= $title; ?><div class="rSidePosition"><?= $dropdown_groups; ?></div></h1>
-<div class="well"><?= $page_description; ?></div>
+<div class="bs-callout">
+    <?= $page_description; ?>
+</div>
 <ul class="nav nav-tabs">
     <li class="active"><a href="<?= base_url(); ?>resources<?= $group_get_query; ?>">Every projects</a></li>
     <li><a href="<?= base_url(); ?>resources/issues<?= $group_get_query; ?>">Every issues</a></li>

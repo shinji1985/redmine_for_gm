@@ -14,7 +14,7 @@
 | path to your installation.
 |
 */
-$config['base_url'] = 'http://localhost:8888/redmine_viewer/';
+$config['base_url'] = 'http://localhost:8888/redmine_for_gm/';
 
 /*
 |--------------------------------------------------------------------------

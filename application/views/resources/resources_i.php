@@ -1,10 +1,11 @@
 
-<h1 class="page-header"><?= $title; ?><div class="rSidePosition"><?=$dropdown_groups;?></div></h1>
-<div class="well"><?=$page_description;?></div>
- 
+<h1 class="page-header"><?= $title; ?><div class="rSidePosition"><?= $dropdown_groups; ?></div></h1>
+<div class="bs-callout">
+    <?= $page_description; ?>
+</div>
 <ul class="nav nav-tabs">
-    <li><a href="<?= base_url(); ?>resources<?=$group_get_query;?>">Every projects</a></li>
-    <li class="active"><a href="<?= base_url(); ?>resources/issues<?=$group_get_query;?>">Every issues</a></li>
+    <li><a href="<?= base_url(); ?>resources<?= $group_get_query; ?>">Every projects</a></li>
+    <li class="active"><a href="<?= base_url(); ?>resources/issues<?= $group_get_query; ?>">Every issues</a></li>
 </ul>
 
 <div class="gantt"></div>
@@ -90,7 +91,7 @@ endforeach;
             },
             content: function() {
                 if($(this).data('dataObj').flg != 'open'){
-                return $(this).data('dataObj').description;
+                    return $(this).data('dataObj').description;
                 }
             },
             trigger: "hover"

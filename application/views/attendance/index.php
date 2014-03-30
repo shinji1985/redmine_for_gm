@@ -1,42 +1,11 @@
 
 <h1 class="page-header"><?= $title; ?><div class="rSidePosition"><?= $dropdown_groups; ?></div></h1>
-<div class="well"><?= $page_description; ?></div>
-<div class="row">
-    <div class="col-md-2">
-        <div class="table-responsive">
-            <table class="table table-bordered">
-                <tbody>
-                    <tr >
-                        <th><?= $date['year']; ?> <?= $date['month_en']; ?></th>
-                    </tr>
-                    <tr>
-                        <td><small>#</small></td>
-                    </tr>
-                    <?php
-                    foreach ($users as $row):
-                        $name = anchor(REDMINE_URL . 'users/' . $row['id'], substr($row['firstname'] . ' ' . $row['lastname'], 0, 21), 'target="_blank"');
-                        ?>
-                        <tr>
-                            <td><small><?= $name; ?></small></td>
 
-                        </tr>
-                    <?php endforeach; ?>
-
-                </tbody>
-            </table>
-        </div>
-    </div>
-    <div class="col-md-10">
-        <div  style="overflow-x:scroll; width:944px;">
-            <?= $date_table; ?>
-        </div>
-    </div>
-</div>
 
 <?php if (count($issues_noassigned) > 0): ?>
     <div class="bs-callout bs-callout-danger">
         <h4>Warning!</h4>
-        <p>These issues as follows are assigned to nobody except for issues have subtasks. Click on the subject and set the Assignee parameter in Redmine.<br/>
+        <p>These issues as follows are assigned to nobody. Click on the subject and set the Assignee parameter in Redmine.<br/>
             <strong>NOTE</strong> If you bother to update issues in bulk, you can use <a target="_blank" href="http://www.redmine.org/projects/redmine/wiki/RedmineIssueList#Bulk-editing-issues">Bulk editing issues</a>.</p>
     </div>
     <div class="table-responsive">
@@ -79,3 +48,102 @@
     </div>
 
 <?php endif; ?>
+<div class="bs-callout">
+    <ol>
+        <li>Preparations
+            <ol>
+                <li>Create a new role has the only permission to view and add issues <a href="<?= REDMINE_URL; ?>roles" target="_blank">here</a>.</li>
+                <li>Create project for attendance managent.</li>
+                <li>Add staffs as the new role and add admin users as a manager to the new project for attendance management.</li>
+            </ol>
+
+        </li>
+        <li>Usage
+            <ol>
+                <li>In the end of the day, staffs add new issue with Estimated time to log work hours on the day.</li>
+                <li>Admin user check it and change the status to "Closed" if it's no problem.</li>
+            </ol>
+        </li>
+    </ol>
+    <p><strong>NOTE</strong> If you bother to update issues in bulk, you can use <a target="_blank" href="http://www.redmine.org/projects/redmine/wiki/RedmineIssueList#Bulk-editing-issues">Bulk editing issues</a>.</p>
+</div>
+<div style="text-align:right; margin-bottom:20px;">
+    <form class="form-inline">
+        <div class="form-group">
+            <input type="text" style="text-align: right; width:100px;" class="form-control year" name="year" value="<?= $date['year']; ?>" placeholder="Year">
+        </div>
+        <div class="form-group">
+            <?= form_dropdown('month', $date['month_dropdown'], $date['month'], ' class="form-control month"'); ?> 
+        </div>
+        <button type="submit" class="btn btn-default date_change">Change</button>
+    </form>
+</div>
+
+<div class="row">
+    <div class="col-md-2">
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <tbody>
+                    <tr >
+                        <th><?= $date['year']; ?> <?= $date['month_en']; ?></th>
+                    </tr>
+                    <tr>
+                        <td><small>#</small></td>
+                    </tr>
+                    <?php
+                    foreach ($users as $row):
+                        $name = anchor(REDMINE_URL . 'users/' . $row['id'], substr($row['firstname'] . ' ' . $row['lastname'], 0, 21), 'target="_blank"');
+                        ?>
+                        <tr>
+                            <td><small><?= $name; ?></small></td>
+
+                        </tr>
+                    <?php endforeach; ?>
+
+                    <tr>
+                        <td><small>#</small></td>
+                    </tr>
+                    <tr >
+                        <th><?= $date['year']; ?> <?= $date['month_en']; ?></th>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="col-md-10">
+        <div id="attend_table" style="overflow-x:scroll;">
+            <?= $date_table; ?>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function() {
+        
+        //popover
+        $('[rel=popover]').popover({
+            placement: 'top',
+            html: true,
+            trigger: "hover"
+        });
+        
+        //Change month
+        $('.date_change').click(function() {
+            document.location = '<?= base_url(); ?>attendance/'+$('.year').val()+'/'+$('.month').val()+'<?= $group_get_query; ?>';
+            return false;
+        });
+        
+        //horizontal scroll
+        var speed = 30;
+        $('#attend_table').on('mousewheel', function(event, mov) {
+            //ie firefox
+            $(this).scrollLeft($(this).scrollLeft() - mov * speed);
+            //webkit
+            $('body').scrollLeft($('body').scrollLeft() - mov * speed);
+            
+            //Stop vertical scroll
+            return false;  
+        });
+       
+    });
+</script>
