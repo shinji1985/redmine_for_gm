@@ -45,7 +45,7 @@
     <script>
         var data = [
 <?php foreach ($issues as $row): ?>
-            ["#<?= $row['id']; ?>", "<?= $row['root_id']; ?>", "<?= $row['parent_id']; ?>", "<?= $row['subject']; ?>","<?= $row['priority_id']; ?>", "<?= $row['done_ratio']; ?>", "<?= $row['estimated_hours']; ?>", "<?= $row['start_date']; ?>", "<?= $row['due_date']; ?>"],
+            ["#<?= $row['id']; ?>", "<?= $row['root_id']; ?>", "<?= $row['parent_id']; ?>", "<?= $row['subject']; ?>","<?= $row['priority_id']; ?>", "<?= $row['done_ratio']; ?>", "<?= $row['estimated_hours']; ?>", "<?= $row['start_date']; ?>", "<?= $row['due_date']; ?>", "<?= $row['assigned_to_id']; ?>"],
 <?php endforeach; ?>
     ];
     $("#dataTable").handsontable('selectCell');

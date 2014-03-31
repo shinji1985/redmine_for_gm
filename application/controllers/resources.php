@@ -13,7 +13,8 @@ class Resources extends MY_Controller {
         parent::__construct();
 
         //init
-        $this->past_period = date('Y-m-d', strtotime('-1 month'));
+        $this->past_period = date('Y-m-d', strtotime('-45 days'));
+        echo $this->past_period;
         $this->open = ' ';
         $this->open_class = 'ganttOpen';
 
@@ -34,24 +35,24 @@ class Resources extends MY_Controller {
     //remove issues
     function _remove_issues($user_id = "") {
         //Remove issues in the project of attendance management
-        $remove_project="";
+        $remove_project = "";
         $p_where['identifier'] = ATTENDANCE_PRJ_IDENTIFIER;
         $at_project = $this->projects->get_row($p_where);
-        if($at_project):
-            $remove_project="issues.project_id != '{$at_project['id']}' AND ";
+        if ($at_project):
+            $remove_project = "issues.project_id != '{$at_project['id']}' AND ";
         endif;
-        
+
         $where = $remove_project;
         if ($user_id != ''):
             //remove status "Resolved Closed Rejected"
-            $where = $where."(issues.start_date > '{$this->past_period}' OR issues.due_date > '{$this->past_period}' ) AND issues.assigned_to_id ='{$user_id}' AND issues.status_id !='3' AND issues.status_id !='5' AND issues.status_id != '6'";
+            $where = $where . "(issues.start_date > '{$this->past_period}' OR issues.due_date > '{$this->past_period}' ) AND issues.assigned_to_id ='{$user_id}' AND issues.status_id !='3' AND issues.status_id !='5' AND issues.status_id != '6'";
         else:
             //nobody
             //remove status "Resolved Closed Rejected"
-            $where = $where."(issues.start_date > '{$this->past_period}' OR issues.due_date > '{$this->past_period}' )  AND issues.assigned_to_id IS NULL AND issues.status_id != '3' AND issues.status_id != '5' AND issues.status_id != '6'";
+            $where = $where . "(issues.start_date > '{$this->past_period}' OR issues.due_date > '{$this->past_period}' )  AND issues.assigned_to_id IS NULL AND issues.status_id != '3' AND issues.status_id != '5' AND issues.status_id != '6'";
 
         endif;
-        
+
         //Get issues have parent issue 
         $ex_where = "issues.parent_id != ''";
         $parent_issues_result = $this->issues->get_all($ex_where);
@@ -100,7 +101,6 @@ class Resources extends MY_Controller {
             $issues_order_by = 'issues.project_id ASC';
             $view_text['users'][$i] = $user_row;
             $issues_result = $this->issues->get_all_with_projects($where, $issues_order_by);
-
 
             if (count($issues_result) > 0):
                 $project_identifier = '';
