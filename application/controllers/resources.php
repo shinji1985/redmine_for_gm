@@ -17,6 +17,8 @@ class Resources extends MY_Controller {
         $this->open = ' ';
         $this->open_class = 'ganttOpen';
 
+        date_default_timezone_set('GMT');
+
         //library
         $this->load->library('group');
         $this->load->library('login');

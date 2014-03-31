@@ -17,6 +17,7 @@
         $(".gantt").gantt({
             source: [
 <?php
+
 foreach ($users as $user_row):
     $i = 0;
     foreach ($user_row['issues'] as $issues_row):
