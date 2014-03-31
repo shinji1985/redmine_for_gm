@@ -33,20 +33,29 @@ class Resources extends MY_Controller {
 
     //remove issues
     function _remove_issues($user_id = "") {
-
-        //Get issues 
-        $ex_where = "issues.parent_id != ''";
-        $parent_issues_result = $this->issues->get_all($ex_where);
-
+        //Remove issues in the project of attendance management
+        $remove_project="";
+        $p_where['identifier'] = ATTENDANCE_PRJ_IDENTIFIER;
+        $at_project = $this->projects->get_row($p_where);
+        if($at_project):
+            $remove_project="issues.project_id != '{$at_project['id']}' AND ";
+        endif;
+        
+        $where = $remove_project;
         if ($user_id != ''):
             //remove status "Resolved Closed Rejected"
-            $where = "(issues.start_date > '{$this->past_period}' OR issues.due_date > '{$this->past_period}' ) AND issues.assigned_to_id ='{$user_id}' AND issues.status_id !='3' AND issues.status_id !='5' AND issues.status_id != '6'";
+            $where = $where."(issues.start_date > '{$this->past_period}' OR issues.due_date > '{$this->past_period}' ) AND issues.assigned_to_id ='{$user_id}' AND issues.status_id !='3' AND issues.status_id !='5' AND issues.status_id != '6'";
         else:
             //nobody
             //remove status "Resolved Closed Rejected"
-            $where = "(issues.start_date > '{$this->past_period}' OR issues.due_date > '{$this->past_period}' )  AND issues.assigned_to_id IS NULL AND issues.status_id != '3' AND issues.status_id != '5' AND issues.status_id != '6'";
+            $where = $where."(issues.start_date > '{$this->past_period}' OR issues.due_date > '{$this->past_period}' )  AND issues.assigned_to_id IS NULL AND issues.status_id != '3' AND issues.status_id != '5' AND issues.status_id != '6'";
 
         endif;
+        
+        //Get issues have parent issue 
+        $ex_where = "issues.parent_id != ''";
+        $parent_issues_result = $this->issues->get_all($ex_where);
+
 
         foreach ($parent_issues_result as $row):
             $where = $where . " AND issues.id != '" . $row['parent_id'] . "'";
@@ -213,8 +222,6 @@ class Resources extends MY_Controller {
 
         $this->_display('resources/resources_i', $view_text);
     }
-
-    
 
     //Get issues assigned nobody
     function _getissues_no_assigned() {
