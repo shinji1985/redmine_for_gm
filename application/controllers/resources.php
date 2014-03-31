@@ -185,15 +185,18 @@ class Resources extends MY_Controller {
                     else:
                         $view_text['users'][$i]['issues'][$k]['customClass'] = 'ganttGreen';
                     endif;
+                    if ($issues_row['estimated_hours'] > 0):
+                        $view_text['users'][$i]['issues'][$k]['estimated_hours'] = $issues_row['estimated_hours'];
+                    else:
+                        $view_text['users'][$i]['issues'][$k]['estimated_hours'] = 0;
+                    endif;
                     $view_text['users'][$i]['issues'][$k]['flg'] = 'issue';
                     $view_text['users'][$i]['issues'][$k]['identifier'] = $issues_row['identifier'];
                     $view_text['users'][$i]['issues'][$k]['id'] = $issues_row['id'];
                     $view_text['users'][$i]['issues'][$k]['project_name'] = $issues_row['project_name'];
-                    $view_text['users'][$i]['issues'][$k]['estimated_hours'] = $issues_row['estimated_hours'];
                     $view_text['users'][$i]['issues'][$k]['tracker_name'] = $issues_row['tracker_name'];
                     $view_text['users'][$i]['issues'][$k]['issue_status'] = $issues_row['issue_status'];
                     $view_text['users'][$i]['issues'][$k]['done_ratio'] = $issues_row['done_ratio'];
-                    $view_text['users'][$i]['issues'][$k]['estimated_hours'] = $issues_row['estimated_hours'];
                     $view_text['users'][$i]['issues'][$k]['start_date'] = $issues_row['start_date'];
                     $view_text['users'][$i]['issues'][$k]['due_date'] = $issues_row['due_date'];
                     $k++;

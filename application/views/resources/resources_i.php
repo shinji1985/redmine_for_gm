@@ -25,10 +25,15 @@ foreach ($users as $user_row):
         else:
             $name = anchor(REDMINE_URL . 'users/' . $user_row['id'], $user_row['firstname'] . ' ' . $user_row['lastname'], 'target="_blank"');
         endif;
+        if ($issues_row['id'] != ''):
+            $desc = "#{$issues_row['id']} {$issues_row['subject']}";
+        else:
+            $desc = ' ';
+        endif;
         ?>
                                 {
                                     name: '<?= $name; ?>',
-                                    desc: "<?= $issues_row['subject']; ?>",
+                                    desc: "<?= $desc; ?>",
                                     values: [{
                                             id: "<?= $issues_row['id']; ?>",
                                             from: "/Date(<?= strtotime($issues_row['start_date']) * 1000; ?>)/",
@@ -42,7 +47,8 @@ foreach ($users as $user_row):
                                                 subject:'<?= $issues_row['subject']; ?>',
                                                 project_name:'<?= $issues_row['project_name']; ?>',
                                                 identifier:'<?= $issues_row['identifier']; ?>',
-                                                description:"<?= $issues_row['subject']; ?> <br/>"
+                                                description:"#<?= $issues_row['id']; ?> <?= $issues_row['subject']; ?> <br/>"
+                                                    +"<?= $issues_row['start_date']; ?>〜<?= $issues_row['due_date']; ?> <br/>"
                                                     +"<span class='glyphicon glyphicon-flag'></span> <?= $issues_row["tracker_name"]; ?><br/>"
                                                     +"<span class='glyphicon glyphicon-play'></span> <?= $issues_row["issue_status"]; ?><br/>"
                                                     +"<span class='glyphicon glyphicon-user'></span> <?= $user_row['firstname'] . ' ' . $user_row['lastname']; ?><br/>"
