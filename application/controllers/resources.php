@@ -14,7 +14,6 @@ class Resources extends MY_Controller {
 
         //init
         $this->past_period = date('Y-m-d', strtotime('-45 days'));
-        echo $this->past_period;
         $this->open = ' ';
         $this->open_class = 'ganttOpen';
 
