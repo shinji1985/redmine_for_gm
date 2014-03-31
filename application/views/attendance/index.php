@@ -48,23 +48,72 @@
     </div>
 
 <?php endif; ?>
-<div class="bs-callout">
-    <ol>
-        <li>Preparations
-            <ol>
-                <li>Create a new role has the only permission to view and add issues <a href="<?= REDMINE_URL; ?>roles" target="_blank">here</a>.</li>
-                <li>Create project for attendance managent.</li>
-                <li>Add staffs as the new role and add admin users as a manager to the new project for attendance management.</li>
-            </ol>
 
-        </li>
-        <li>Usage
+<?php if (count($holiday_applications) > 0): ?>
+    <div class="bs-callout bs-callout-warning">
+        <h4>Paid Holiday applications</h4>
+        <p>These issues as follows are applications of paid holiday. If you accept it, change the status "Closed". If not, Set "Rejected".<br/>
+            <strong>NOTE</strong> If you bother to update issues in bulk, you can use <a target="_blank" href="http://www.redmine.org/projects/redmine/wiki/RedmineIssueList#Bulk-editing-issues">Bulk editing issues</a>.</p>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th width="70">ID</th>
+                    <th width="70"><span class='glyphicon glyphicon-flag'></span></th>
+                    <th width="70"><span class='glyphicon glyphicon-play'></span></th>
+                    <th>Project Name</th>
+                    <th>Subject</th>
+                    <th width="100">Start Date</th>
+                    <th width="100">Due Date</th>
+                    <th class="cell_center" width="70"><span class='glyphicon glyphicon-time'></span></th>
+                    <th class="cell_center" width="70"><span class='glyphicon glyphicon-tasks'></span></th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                foreach ($holiday_applications as $row):
+                    if ($row['estimated_hours'] != ''):
+                        $row['estimated_hours'] = $row['estimated_hours'] . ' H';
+                    endif;
+                    ?>
+                    <tr>
+                        <td><?= $row['id']; ?></td>
+                        <td><?= $row['tracker_name']; ?></td>
+                        <td><?= $row['issue_status']; ?></td>
+                        <td><a target="_blank" href="<?= REDMINE_URL; ?>projects/<?= $row['identifier']; ?>"><?= $row['project_name']; ?></a></td>
+                        <td><a target="_blank" href="<?= REDMINE_URL; ?>issues/<?= $row['id']; ?>"><?= $row['subject']; ?></a></td>
+                        <td><?= $row['start_date']; ?></td>
+                        <td><?= $row['due_date']; ?></td>
+                        <td class="cell_right"><?= $row['estimated_hours']; ?></td>
+                        <td class="cell_right"><?= $row['done_ratio']; ?> %</td>
+                    </tr>
+                <?php endforeach; ?>
+
+            </tbody>
+        </table>
+    </div>
+
+<?php endif; ?>
+
+
+
+<div class="bs-callout">
+    <h4>Usage</h4>
+    <ul>
+        <li>Daily Report
             <ol>
-                <li>In the end of the day, staffs add new issue with Estimated time to log work hours on the day.</li>
-                <li>Admin user check it and change the status to "Closed" if it's no problem.</li>
+                <li>At the end of the day, staffs add new issue setting Tracker to DailyReport, Estimated time to work hours on the day and Start date to the day.</li>
+                <li>Admin user check it and change the status to "Closed" if it's ok.</li>
             </ol>
         </li>
-    </ol>
+        <li>Paid Holiday application
+            <ol>
+                <li>In the case that staffs want to apply paid holiday, they add new issue setting Tracker to PaidHoliday, Estimated time to the amount of paid hours, and Start date to the day they want.</li>
+                <li>Admin user check it and change the status to "Closed" if it's ok.</li>
+            </ol>
+        </li>
+    </ul>
     <p><strong>NOTE</strong> If you bother to update issues in bulk, you can use <a target="_blank" href="http://www.redmine.org/projects/redmine/wiki/RedmineIssueList#Bulk-editing-issues">Bulk editing issues</a>.</p>
 </div>
 <div style="text-align:right; margin-bottom:20px;">

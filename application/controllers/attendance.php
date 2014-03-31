@@ -11,7 +11,7 @@ class Attendance extends MY_Controller {
         parent::__construct();
 
         //init
-        $this->holidays = unserialize(HOLIDAYS);
+        $this->holidays = unserialize(ATTENDANCE_HOLIDAYS);
 
         //library
         $this->load->library('group');
@@ -54,7 +54,8 @@ class Attendance extends MY_Controller {
         $where['identifier'] = ATTENDANCE_PRJ_IDENTIFIER;
         $view_text['project'] = $this->projects->get_row($where);
 
-        if ($view_text['project']):
+        //Configure Check
+        if ($view_text['project'] && count($this->holidays) > 0 && ATTENDANCE_WEEKDAY_WORKTIME != '' && ATTENDANCE_PAID_HOLIDAY_TRACKER_ID != ''):
             $users = $this->group->getusers_in_group($this->session->userdata("group_id"));
             $i = 0;
             foreach ($users as $user_row):
@@ -64,7 +65,7 @@ class Attendance extends MY_Controller {
 
                 for ($k = 1; $k <= $view_text['date']['max_days']; $k++):
                     $k_day = sprintf("%02d", $k);
-                    $where = "issues.start_date = '{$view_text['date']['year_month']}-{$k_day}' AND issues.project_id = '{$view_text['project']['id']}' AND issues.assigned_to_id = '{$user_row['id']}'";
+                    $where = "issues.start_date = '{$view_text['date']['year_month']}-{$k_day}' AND issues.project_id = '{$view_text['project']['id']}' AND issues.assigned_to_id = '{$user_row['id']}' AND issues.status_id !='6'";
 
                     $issues_result = $this->issues->get_issues_for_attendance($where, $issues_order_by);
 
@@ -76,6 +77,10 @@ class Attendance extends MY_Controller {
 
             //Get issues assigned to nobody
             $view_text['issues_noassigned'] = $this->_getissues_no_assigned($view_text['project']['id'], $view_text['date']['year_month']);
+
+            //Get holiday applications 
+            $view_text['holiday_applications'] = $this->_getpaid_holiday_application($view_text['project']['id']);
+
 
             //Generate attendance table
             $view_text = $this->_generate_table($view_text);
@@ -170,6 +175,7 @@ class Attendance extends MY_Controller {
             $weekday_woking[$u_cnt] = 0;
             $sunday_woking[$u_cnt] = 0;
             $saturday_woking[$u_cnt] = 0;
+            $paidholiday_woking[$u_cnt] = 0;
         endfor;
 
         for ($day = 1; $day <= $view_text['date']['max_days']; $day++):
@@ -206,12 +212,13 @@ class Attendance extends MY_Controller {
             $week[] = "<td class='cell_center {$set_color}'><small>{$weekday}</small></td>";
 
             for ($u_cnt = 0; $u_cnt < count($view_text['users']); $u_cnt++):
-                
+
                 $set_color_u = $set_color;
                 $work_time = '';
                 $set_url = '';
                 $mult_issues = 0;
                 $admin_flg = 1;
+                $paidholiday_flg = 0;
 
                 //Add up the worktime on the day
                 foreach ($view_text['users'][$u_cnt]['issues'][$day] as $row):
@@ -228,6 +235,11 @@ class Attendance extends MY_Controller {
                     //If the issue status is not closed, set admin_flg to false.
                     if ($row['status_id'] != 5):
                         $admin_flg = 0;
+                    endif;
+
+                    //If the issue tracker_id is Paid holiday, set paidholiday_flg
+                    if ($row['tracker_id'] == ATTENDANCE_PAID_HOLIDAY_TRACKER_ID):
+                        $paidholiday_flg = 1;
                     endif;
 
                     $set_url = REDMINE_URL . 'issues/' . $row['id'];
@@ -253,19 +265,29 @@ class Attendance extends MY_Controller {
                             $weekday_woking[$u_cnt] = $weekday_woking[$u_cnt] + ATTENDANCE_WEEKDAY_WORKTIME;
                             $over_woking[$u_cnt] = $over_woking[$u_cnt] + ($tmp_work - ATTENDANCE_WEEKDAY_WORKTIME);
                         endif;
+
+                        if ($paidholiday_flg == 1):
+                            $paidholiday_woking[$u_cnt] = $paidholiday_woking[$u_cnt] + $work_time / ATTENDANCE_WEEKDAY_WORKTIME;
+                        endif;
+
                         break;
                 endswitch;
 
                 if (is_int($work_time)):
                     //Set popover
                     $data_content = '';
-                    //If the last update user is Admin, set admin flg.
+                    //If the status is Closed, set admin flg.
                     if ($admin_flg == 1):
                         $data_content = 'Admin: <span class="glyphicon glyphicon-ok-sign"></span> ';
                         $set_color_u = "success";
                     else :
                         $data_content = 'Admin: Unapproved';
                     endif;
+
+                    if ($paidholiday_flg == 1 && $admin_flg == 1):
+                        $set_color_u = "warning";
+                    endif;
+
                     //If the worktime consists of 2 issues, set the text as follows.
                     if ($mult_issues > 1):
                         $data_content = $data_content . '<br/>This worktime consists of 2 issues. Check Redmine.';
@@ -288,6 +310,8 @@ class Attendance extends MY_Controller {
         $days[] = "<th class='cell_center'>Saturday</th>";
         $days[] = "<th class='cell_center'>Sunday</th>";
         $days[] = "<th class='cell_center'>Holiday</th>";
+        $days[] = "<th class='cell_center'>PaidHoliday</th>";
+        $week[] = "<td class='cell_center'><small><span style='display:inline-block;'></span></small></td>";
         $week[] = "<td class='cell_center'><small><span style='display:inline-block;'></span></small></td>";
         $week[] = "<td class='cell_center'><small><span style='display:inline-block;'></span></small></td>";
         $week[] = "<td class='cell_center'><small><span style='display:inline-block;'></span></small></td>";
@@ -303,6 +327,7 @@ class Attendance extends MY_Controller {
             $user_attend[$u_cnt][] = "<td class='cell_center'><small>{$saturday_woking[$u_cnt]}</small></td>";
             $user_attend[$u_cnt][] = "<td class='cell_center'><small>{$sunday_woking[$u_cnt]}</small></td>";
             $user_attend[$u_cnt][] = "<td class='cell_center'><small>{$holiday_woking[$u_cnt]}</small></td>";
+            $user_attend[$u_cnt][] = "<td class='cell_center'><small>{$paidholiday_woking[$u_cnt]} day</small></td>";
             $this->table->add_row($user_attend[$u_cnt]);
         endfor;
         $this->table->add_row($week);
@@ -317,16 +342,16 @@ class Attendance extends MY_Controller {
     //Get issues assigned nobody
     function _getissues_no_assigned($project_id = "", $date = "") {
         //remove issues except this month
-        $where = "issues.start_date LIKE '{$date}%' AND issues.project_id = '{$project_id}' AND issues.assigned_to_id IS NULL";
+        $where = "issues.start_date LIKE '{$date}%' AND issues.project_id = '{$project_id}' AND issues.assigned_to_id IS NULL AND issues.status_id !='6'";
         $issues_order_by = 'issues.start_date ASC';
 
         return $this->issues->get_issues_for_attendance($where, $issues_order_by);
     }
 
-    //Get issues not estimated
-    function _getissues_not_estimated($project_id = "", $date = "") {
+    //Get Paid Holiday application
+    function _getpaid_holiday_application($project_id = "") {
         //remove issues except this month
-        $where = "issues.start_date LIKE '{$date}%' AND issues.project_id = '{$project_id}'";
+        $where = "issues.project_id = '{$project_id}' AND issues.tracker_id = '" . ATTENDANCE_PAID_HOLIDAY_TRACKER_ID . "' AND issues.status_id ='1'";
         $issues_order_by = 'issues.start_date ASC';
 
         return $this->issues->get_issues_for_attendance($where, $issues_order_by);
