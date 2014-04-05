@@ -49,8 +49,13 @@ define('SYS_NM', 'Redmine for GM');
 define('REDMINE_URL', 'http://redmine.bit-vietnam.com/');
 
 
-define('ATTENDANCE_PRJ_IDENTIFIER', 'amp'); 
-define('ATTENDANCE_HOLIDAYS', serialize(array("2014-04-09", "2014-04-30", "2014-05-01", "2014-09-02"))); //Set holiday 
+define('ATTENDANCE_PRJ_IDENTIFIER', 'amp');
+define('ATTENDANCE_HOLIDAYS', serialize(
+                array(
+                    "0" => array("2014-04-09", "2014-04-30", "2014-05-01", "2014-09-02"), //0:default
+                    "45" => array("2014-04-29","2014-05-03","2014-05-04","2014-05-05","2014-05-06","2014-07-21","2014-09-15","2014-09-23","2014-10-13","2014-11-03","2014-11-23","2014-11-24","2014-12-23") //group id=>holidays array
+                )
+        )); 
 define('ATTENDANCE_WEEKDAY_WORKTIME', '8'); //Work time a day. If over this value, it will be counted as overtime.
 define('ATTENDANCE_PAID_HOLIDAY_TRACKER_ID', '5'); //Check trackers table in database.
 

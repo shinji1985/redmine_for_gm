@@ -144,6 +144,26 @@ class Attendance extends MY_Controller {
 
     function _generate_table($view_text = array()) {
         $this->load->library('table');
+        //Init
+        $days = array();
+        $week = array();
+        $user_attend = array();
+        $max_weekday_woking = 0;
+
+        for ($u_cnt = 0; $u_cnt < count($view_text['users']); $u_cnt++):
+            $user_attend[$u_cnt] = array();
+            $holiday_woking[$u_cnt] = 0;
+            $over_woking[$u_cnt] = 0;
+            $weekday_woking[$u_cnt] = 0;
+            $sunday_woking[$u_cnt] = 0;
+            $saturday_woking[$u_cnt] = 0;
+            $paidholiday_woking[$u_cnt] = 0;
+        endfor;
+        if (isset($this->holidays[$this->session->userdata("group_id")])):
+            $holidays_array = $this->holidays[$this->session->userdata("group_id")];
+        else:
+            $holidays_array = $this->holidays[0];
+        endif;
         $tmpl = array(
             'table_open' => '<table class="table table-bordered">',
             'heading_row_start' => '<tr>',
@@ -163,20 +183,7 @@ class Attendance extends MY_Controller {
 
         $this->table->set_template($tmpl);
 
-        $days = array();
-        $week = array();
-        $user_attend = array();
-        $max_weekday_woking = 0;
-        //Init
-        for ($u_cnt = 0; $u_cnt < count($view_text['users']); $u_cnt++):
-            $user_attend[$u_cnt] = array();
-            $holiday_woking[$u_cnt] = 0;
-            $over_woking[$u_cnt] = 0;
-            $weekday_woking[$u_cnt] = 0;
-            $sunday_woking[$u_cnt] = 0;
-            $saturday_woking[$u_cnt] = 0;
-            $paidholiday_woking[$u_cnt] = 0;
-        endfor;
+
 
         for ($day = 1; $day <= $view_text['date']['max_days']; $day++):
             $time = mktime(0, 0, 0, $view_text['date']['month'], $day, $view_text['date']['year']);
@@ -187,7 +194,7 @@ class Attendance extends MY_Controller {
             //Check holiday
             $zero_day = sprintf("%02d", $day);
             $the_date = "{$view_text['date']['year_month']}-{$zero_day}";
-            if (in_array($the_date, $this->holidays)):
+            if (in_array($the_date, $holidays_array)):
                 $weekday = 'Hol';
             endif;
             //Set color in accordance with the day type
