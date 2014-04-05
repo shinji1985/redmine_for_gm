@@ -239,7 +239,7 @@ class Attendance extends MY_Controller {
                     else:
                         $work_time = $work_time + 0;
                     endif;
-                    $description = $description.$row['description'];
+                    $description = $description . $row['description'];
 
                     //If the issue status is not closed, set admin_flg to false.
                     if ($row['status_id'] != 5):
@@ -284,7 +284,11 @@ class Attendance extends MY_Controller {
 
                 if (is_float($work_time)):
                     //Set popover
-                    $data_content = $description;
+                    if ($description != ""):
+                        $data_content = nl2br($description);
+                    else:
+                        $data_content = 'none';
+                    endif;
                     //If the status is Closed, set admin flg.
                     if ($admin_flg == 1):
                         $set_color_u = "success";
