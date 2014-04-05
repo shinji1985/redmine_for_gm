@@ -223,6 +223,7 @@ class Attendance extends MY_Controller {
                 $set_color_u = $set_color;
                 $work_time = '';
                 $set_url = '';
+                $description = '';
                 $mult_issues = 0;
                 $admin_flg = 1;
                 $paidholiday_flg = 0;
@@ -238,6 +239,7 @@ class Attendance extends MY_Controller {
                     else:
                         $work_time = $work_time + 0;
                     endif;
+                    $description = $description . $row['description'];
 
                     //If the issue status is not closed, set admin_flg to false.
                     if ($row['status_id'] != 5):
@@ -282,13 +284,14 @@ class Attendance extends MY_Controller {
 
                 if (is_float($work_time)):
                     //Set popover
-                    $data_content = '';
+                    if ($description != ""):
+                        $data_content = nl2br($description);
+                    else:
+                        $data_content = 'none';
+                    endif;
                     //If the status is Closed, set admin flg.
                     if ($admin_flg == 1):
-                        $data_content = 'Admin: <span class="glyphicon glyphicon-ok-sign"></span> ';
                         $set_color_u = "success";
-                    else :
-                        $data_content = 'Admin: Unapproved';
                     endif;
 
                     if ($paidholiday_flg == 1 && $admin_flg == 1):
