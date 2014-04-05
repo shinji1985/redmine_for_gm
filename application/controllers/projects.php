@@ -27,7 +27,7 @@ class Projects extends MY_Controller {
 
     function _display($name, $view_text) {
         //project list for header
-        $view_text['dropdown_projects'] = $this->projects->get_all();
+        $view_text['dropdown_projects'] = $this->group->generate_group_project_list($this->session->userdata("group_id"));
         //users group get query
         $view_text['group_get_query']=$this->group->generate_get_query();
 
