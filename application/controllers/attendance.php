@@ -227,7 +227,7 @@ class Attendance extends MY_Controller {
                     $mult_issues++;
 
                     if (!empty($row['estimated_hours'])):
-                        $work_time = $work_time + (int) $row['estimated_hours'];
+                        $work_time = $work_time + (float) $row['estimated_hours'];
                     else:
                         $work_time = $work_time + 0;
                     endif;
@@ -248,16 +248,16 @@ class Attendance extends MY_Controller {
                 //Calc working time 
                 switch ($weekday):
                     case 'Hol';
-                        $holiday_woking[$u_cnt] = $holiday_woking[$u_cnt] + (int) $work_time;
+                        $holiday_woking[$u_cnt] = $holiday_woking[$u_cnt] + (float) $work_time;
                         break;
                     case 'Sat';
-                        $saturday_woking[$u_cnt] = $saturday_woking[$u_cnt] + (int) $work_time;
+                        $saturday_woking[$u_cnt] = $saturday_woking[$u_cnt] + (float) $work_time;
                         break;
                     case 'Sun';
-                        $sunday_woking[$u_cnt] = $sunday_woking[$u_cnt] + (int) $work_time;
+                        $sunday_woking[$u_cnt] = $sunday_woking[$u_cnt] + (float) $work_time;
                         break;
                     default :
-                        $tmp_work = (int) $work_time;
+                        $tmp_work = (float) $work_time;
                         if ($tmp_work <= ATTENDANCE_WEEKDAY_WORKTIME):
                             $weekday_woking[$u_cnt] = $weekday_woking[$u_cnt] + $tmp_work;
                             $over_woking[$u_cnt] = $over_woking[$u_cnt] + 0;
@@ -273,7 +273,7 @@ class Attendance extends MY_Controller {
                         break;
                 endswitch;
 
-                if (is_int($work_time)):
+                if (is_float($work_time)):
                     //Set popover
                     $data_content = '';
                     //If the status is Closed, set admin flg.
