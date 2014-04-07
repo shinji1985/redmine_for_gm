@@ -1,52 +1,44 @@
 
-<h1 class="page-header"><?= $title; ?></h1>
 <div class="panel panel-default">
     <!-- Default panel contents -->
-    <div class="panel-heading">Project Description</div>
+    <div class="panel-heading">Redmine URL</div>
     <div class="panel-body">
-        <p><?= nl2br($project['description']); ?></p>
+        <p><a target="_blank" href="<?= REDMINE_URL; ?>projects/<?= $project['identifier']; ?>">http://redmine.bit-vietnam.com/projects/<?= $project['identifier']; ?></a></p>
     </div>
 
-    <!-- Table -->
-    <table class="table">
-        <tr>
-            <th>HP</th>
-            <td><?= $project['homepage']; ?></td>
-        </tr>
-        <tr>
-            <th>Redmine URL</th>
-            <td><a target="_blank" href="http://redmine.bit-vietnam.com/projects/<?= $project['identifier']; ?>">http://redmine.bit-vietnam.com/projects/<?= $project['identifier']; ?></a></td>
-        </tr>
-        <tr>
-            <th>is_public</th>
-            <td><?= $project['is_public']; ?></td>
-        </tr>
-        <tr>
-            <th>parent_id</th>
-            <td><?= $project['parent_id']; ?></td>
-        </tr>
-        <tr>
-            <th>created_on</th>
-            <td><?= $project['created_on']; ?></td>
-        </tr>
-        <tr>
-            <th>lft</th>
-            <td><?= $project['lft']; ?></td>
-        </tr>
-        <tr>
-            <th>rgt</th>
-            <td><?= $project['rgt']; ?></td>
-        </tr>
-    </table>
 </div>
 <div class="table-responsive">
 
     <div id="dataTable"></div>
     <script>
         var data = [
-<?php foreach ($issues as $row): ?>
-            ["#<?= $row['id']; ?>", "<?= $row['root_id']; ?>", "<?= $row['parent_id']; ?>", "<?= $row['subject']; ?>","<?= $row['priority_id']; ?>", "<?= $row['done_ratio']; ?>", "<?= $row['estimated_hours']; ?>", "<?= $row['start_date']; ?>", "<?= $row['due_date']; ?>", "<?= $row['assigned_to_id']; ?>"],
-<?php endforeach; ?>
+<?php
+foreach ($issues as $row):
+    $subject = str_replace("\"", "", mb_strimwidth($row['subject'] , 0, 15,'...'));
+    ?>
+                ["#<?= $row['id']; ?>", "<?= $row['root_id']; ?>", "<?= $row['parent_id']; ?>", "<?= $subject; ?>","","","<?= $row['priority_id']; ?>", "<?= $row['done_ratio']; ?>", "<?= $row['estimated_hours']; ?>", "<?= $row['start_date']; ?>", "<?= $row['due_date']; ?>", "<?= $row['assigned_to_id']; ?>"],
+    <?php
+    if (count($row['child']) > 0):
+        foreach ($row['child'] as $childrow):
+    $csubject = str_replace("\"", "", mb_strimwidth($childrow['subject'] , 0, 15,'...'));
+            ?>
+                                ["#<?= $childrow['id']; ?>", "<?= $childrow['root_id']; ?>", "<?= $childrow['parent_id']; ?>","","<?= $csubject; ?>","","<?= $childrow['priority_id']; ?>", "<?= $childrow['done_ratio']; ?>", "<?= $childrow['estimated_hours']; ?>", "<?= $childrow['start_date']; ?>", "<?= $childrow['due_date']; ?>", "<?= $childrow['assigned_to_id']; ?>"],
+            <?php
+            if (count($childrow['child']) > 0):
+                foreach ($childrow['child'] as $cchildrow):
+    $ccsubject = str_replace("\"", "", mb_strimwidth($cchildrow['subject'] , 0, 15,'...'));
+                    ?>
+                                                ["#<?= $cchildrow['id']; ?>", "<?= $cchildrow['root_id']; ?>", "<?= $cchildrow['parent_id']; ?>","","","<?= $ccsubject; ?>","<?= $cchildrow['priority_id']; ?>", "<?= $cchildrow['done_ratio']; ?>", "<?= $cchildrow['estimated_hours']; ?>", "<?= $cchildrow['start_date']; ?>", "<?= $cchildrow['due_date']; ?>", "<?= $cchildrow['assigned_to_id']; ?>"],
+                    <?php
+                endforeach;
+            endif;
+
+        endforeach;
+    endif;
+
+
+endforeach;
+?>
     ];
     $("#dataTable").handsontable('selectCell');
     $("#dataTable").handsontable({
@@ -55,7 +47,7 @@
         currentRowClassName: 'currentRow',
         currentColClassName: 'currentCol',
         autoWrapRow: true,
-        colHeaders: ["id", "root_id", "parent_id", "subject","priority_id", "done_ratio", "estimated_hours", "start_date", "due_date", "assigned_to_id"],
+        colHeaders: ["id", "root_id", "parent_id", "subject"," "," ","priority_id", "done_ratio", "estimated_hours", "start_date", "due_date", "assigned_to_id"],
         columns: [
             {
                 //simple text, no special options here id
@@ -65,6 +57,12 @@
             },
             {
                 //simple text, no special options here parent_id
+            },
+            {
+                //simple text, no special options here subject
+            },
+            {
+                //simple text, no special options here subject
             },
             {
                 //simple text, no special options here subject

@@ -32,7 +32,7 @@ class Attendance extends MY_Controller {
         $view_text['page_description'] = 'This page is for Attendance Management.';
 
         //project list for header
-        $view_text['dropdown_projects'] = $this->group->generate_group_project_list($this->session->userdata("group_id"));
+        $view_text['dropdown_projects'] = $this->group->generate_projects_in_thegroup($this->session->userdata("group_id"));
         //users group dropdown
         $view_text['dropdown_groups'] = $this->group->generate_dropdown($this->session->userdata("group_id"));
         //users group get query

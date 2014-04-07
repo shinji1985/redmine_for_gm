@@ -1,5 +1,4 @@
 
-<h1 class="page-header"><?= $title; ?><div class="rSidePosition"><?= $dropdown_groups; ?></div></h1>
 
 
 <?php if (count($issues_noassigned) > 0): ?>

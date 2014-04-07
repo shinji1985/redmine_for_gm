@@ -41,7 +41,7 @@ class Group {
     }
 
     //Generate project list of the group
-    function generate_group_project_list($group_id = "") {
+    function generate_projects_in_thegroup($group_id = "") {
 
         if (is_numeric($this->CI->session->userdata("group_id"))):
             $users = $this->CI->group->getusers_in_group($group_id);

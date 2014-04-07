@@ -1,6 +1,4 @@
 
-    <h1 class="page-header">Dash board</h1>
-
     <h2 class="sub-header">Projects List</h2>
 
 

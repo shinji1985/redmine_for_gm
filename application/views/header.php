@@ -99,3 +99,5 @@
         </div>
 
         <div class="container">
+            
+<h1 class="page-header"><?= $title; ?><div class="rSidePosition"><?= $dropdown_groups; ?></div></h1>
