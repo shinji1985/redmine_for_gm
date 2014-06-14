@@ -32,7 +32,7 @@ class Issues_model extends MY_Model {
 //        echo $this->db->last_query();
         return $query->result_array();
     }
-    
+
     public function get_issues_for_attendance($where = array(), $order_by = "", $limit = 0, $offset = 0) {
 
 
@@ -59,7 +59,23 @@ class Issues_model extends MY_Model {
 //        echo $this->db->last_query();
         return $query->result_array();
     }
-    
+
+    public function get_issues_for_project($where = array(), $order_by = '', $limit = 0, $offset = 0) {
+        if (count($where) > 0)
+            $this->db->where($where);
+
+
+        $this->db->order_by("id","asc");
+        $this->db->order_by("start_date","desc");
+
+        if (is_int($limit) && $limit > 0)
+            $this->db->limit($limit, $offset);
+
+        $query = $this->db->get($this->get_table());
+
+//        echo $this->db->last_query();
+        return $query->result_array();
+    }
 
 }
 

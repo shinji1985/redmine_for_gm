@@ -1,5 +1,4 @@
 
-<h1 class="page-header"><?= $title; ?><div class="rSidePosition"><?= $dropdown_groups; ?></div></h1>
 
 <div class="bs-callout bs-callout-danger">
     <h4>Warning!</h4>
