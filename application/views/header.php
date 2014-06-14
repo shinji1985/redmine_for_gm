@@ -7,35 +7,76 @@
         <title><?= $title; ?>｜<?= SYS_NM; ?></title>
         <meta name="description" content="REDMINE VIEWER">
         <meta name="author" content="Shinji Yamaguchi">
-        <link href="<?= base_url(); ?>css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-        <link href="<?= base_url(); ?>css/dashboard.css" rel="stylesheet" type="text/css" />
-        <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
-        <!-- handsontable -->
-        <link href="<?= base_url(); ?>css/jquery.handsontable.full.css" rel="stylesheet" type="text/css" />
-        <link href="<?= base_url(); ?>css/ui-bootstrap/jquery-ui.custom.css" rel="stylesheet" type="text/css" />
-        <!-- jquery gantt -->
-        <link href="<?= base_url(); ?>css/gantt/css/style.css" rel="stylesheet" type="text/css" />
+
         <!-- original -->
         <link href="<?= base_url(); ?>css/all.css" rel="stylesheet" type="text/css" />
+        <?php if (isset($flexible)): ?>
+            <script type="text/javascript">
+                <!--
+                var imgpathurl = "global";
+                -->
+            </script> 
+            <link rel="stylesheet" href="<?= base_url(); ?>css/flexiblegantt/bootstrap.css" type="text/css">
+            <link href="<?= base_url(); ?>css/dashboard.css" rel="stylesheet" type="text/css" />
+            <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
 
-        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+
+            <link rel="stylesheet" href="<?= base_url(); ?>css/flexiblegantt/platform.css" type="text/css">
+            <link rel="stylesheet" href="<?= base_url(); ?>css/flexiblegantt/jquery.dateField.css" type="text/css">
+
+            <link rel="stylesheet" href="<?= base_url(); ?>css/flexiblegantt/gantt.css" type="text/css">
+            <link rel="stylesheet" href="<?= base_url(); ?>css/flexiblegantt/print.css" type="text/css" media="print">
+            <link rel="stylesheet" href="<?= base_url(); ?>css/flexiblegantt/jquery.svg.css" type="text/css">
+
+            <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+            <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+
+            <script src="<?= base_url(); ?>js/flexiblegantt/libs/jquery.livequery.min.js"></script>
+            <script src="<?= base_url(); ?>js/flexiblegantt/libs/jquery.timers.js"></script>
+            <script src="<?= base_url(); ?>js/flexiblegantt/libs/platform.js"></script>
+            <script src="<?= base_url(); ?>js/flexiblegantt/libs/date.js"></script>
+            <script src="<?= base_url(); ?>js/flexiblegantt/libs/i18nJs.js"></script>
+            <script src="<?= base_url(); ?>js/flexiblegantt/libs/dateField/jquery.dateField.js"></script>
+            <script src="<?= base_url(); ?>js/flexiblegantt/libs/JST/jquery.JST.js"></script>
+
+            <script type="text/javascript" src="<?= base_url(); ?>js/flexiblegantt/libs/jquery.svg.min.js"></script>
+
+
+            <!--In case of jquery 1.8-->
+            <script type="text/javascript" src="<?= base_url(); ?>js/flexiblegantt/libs/jquery.svgdom.1.8.js"></script>
+
+
+            <script src="<?= base_url(); ?>js/flexiblegantt/ganttUtilities.js"></script>
+            <script src="<?= base_url(); ?>js/flexiblegantt/ganttTask.js"></script>
+            <script src="<?= base_url(); ?>js/flexiblegantt/ganttDrawerSVG.js"></script>
+            <script src="<?= base_url(); ?>js/flexiblegantt/ganttGridEditor.js"></script>
+            <script src="<?= base_url(); ?>js/flexiblegantt/ganttMaster.js"></script>
+
+        <?php else: ?>
+            <link href="<?= base_url(); ?>css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+            <link href="<?= base_url(); ?>css/dashboard.css" rel="stylesheet" type="text/css" />
+            <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
+
+            <!-- jquery gantt -->
+            <link href="<?= base_url(); ?>css/gantt/css/style.css" rel="stylesheet" type="text/css" />
+
+            <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+            <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+
+
+            <!-- for gantt -->
+            <script src="<?= base_url(); ?>js/gantt/jquery.fn.gantt.js"></script>
+            <script src="http://taitems.github.com/UX-Lab/core/js/prettify.js"></script>
+
+            <!-- for attendance -->
+            <script src="<?= base_url(); ?>js/jquery.mousewheel.js"></script>
+        <?php endif; ?>
         <!-- Include all compiled plugins (below), or include individual files as needed -->
         <script src="<?= base_url(); ?>js/bootstrap.min.js"></script>
         <script src="<?= base_url(); ?>js/docs.min.js"></script>
 
-        <!-- handsontable -->
-        <script src="<?= base_url(); ?>js/jquery.handsontable.full.js"></script>
-        <script src="<?= base_url(); ?>js/jquery-ui/js/jquery-ui.custom.min.js"></script>
 
-        <!-- for gantt -->
-        <script src="<?= base_url(); ?>js/gantt/jquery.fn.gantt.js"></script>
-        <script src="http://taitems.github.com/UX-Lab/core/js/prettify.js"></script>
-        
-        <!-- for attendance -->
-        <script src="<?= base_url(); ?>js/jquery.mousewheel.js"></script>
-        
-        
+
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
@@ -87,9 +128,9 @@
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Setting <b class="caret"></b></a>
                             <ul class="dropdown-menu">
-                                <li role="presentation"><a role="menuitem" tabindex="-1" target="_blank" href="<?=REDMINE_URL;?>admin/projects" >Projects</a></li>
-                                <li role="presentation"><a role="menuitem" tabindex="-1" target="_blank" href="<?=REDMINE_URL;?>users" >Users</a></li>
-                                <li role="presentation"><a role="menuitem" tabindex="-1" target="_blank" href="<?=REDMINE_URL;?>groups" >Groups</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" target="_blank" href="<?= REDMINE_URL; ?>admin/projects" >Projects</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" target="_blank" href="<?= REDMINE_URL; ?>users" >Users</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" target="_blank" href="<?= REDMINE_URL; ?>groups" >Groups</a></li>
                             </ul>
                         </li>
                         <li><a href="<?= base_url(); ?>index/logout">Logout</a></li>
@@ -99,5 +140,5 @@
         </div>
 
         <div class="container">
-            
-<h1 class="page-header"><?= $title; ?><div class="rSidePosition"><?= $dropdown_groups; ?></div></h1>
+
+            <h1 class="page-header"><?= $title; ?><div class="rSidePosition"><?= $dropdown_groups; ?></div></h1>

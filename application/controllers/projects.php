@@ -32,6 +32,8 @@ class Projects extends MY_Controller {
         $view_text['dropdown_groups'] = $this->group->generate_dropdown($this->session->userdata("group_id"));
         //users group get query
         $view_text['group_get_query'] = $this->group->generate_get_query();
+        //flexible gantt flag
+        $view_text['flexible'] = TRUE;
 
 
         $this->load->view('header', $view_text);
